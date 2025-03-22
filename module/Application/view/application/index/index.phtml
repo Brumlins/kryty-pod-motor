@@ -11,15 +11,14 @@ $this->headScript()->appendFile($this->basePath('js/script.js'));
 <div class="container">
     <h1>Správa produktů - Kryty pod motor</h1>
     
-    <!-- Vue.js filtrování -->
-    <div id="app" class="filter-container">
+    <div class="filter-container">
         <form id="filter-form" method="GET" action="<?= $this->url('home') ?>">
             <div class="filter-group">
                 <label for="znacka_id">Značka:</label>
-                <select name="znacka_id" id="znacka_id" v-model="selectedBrand" @change="applyFilters">
-                    <option value="0">Všechny značky</option>
+                <select name="znacka_id" id="znacka_id">
+                    <option value="0" <?= !isset($filters['znacka_id']) ? 'selected' : '' ?>>Všechny značky</option>
                     <?php foreach ($znacky as $znacka): ?>
-                        <option value="<?= $znacka->getId() ?>" <?= isset($selectedBrand) && $selectedBrand == $znacka->getId() ? 'selected' : '' ?>>
+                        <option value="<?= $znacka->getId() ?>" <?= isset($filters['znacka_id']) && $filters['znacka_id'] == $znacka->getId() ? 'selected' : '' ?>>
                             <?= $this->escapeHtml($znacka->getNazev()) ?>
                         </option>
                     <?php endforeach; ?>
@@ -28,10 +27,10 @@ $this->headScript()->appendFile($this->basePath('js/script.js'));
             
             <div class="filter-group">
                 <label for="material_id">Materiál:</label>
-                <select name="material_id" id="material_id" v-model="selectedMaterial" @change="applyFilters">
-                    <option value="0">Všechny materiály</option>
+                <select name="material_id" id="material_id">
+                    <option value="0" <?= !isset($filters['material_id']) ? 'selected' : '' ?>>Všechny materiály</option>
                     <?php foreach ($materialy as $material): ?>
-                        <option value="<?= $material->getId() ?>" <?= isset($selectedMaterial) && $selectedMaterial == $material->getId() ? 'selected' : '' ?>>
+                        <option value="<?= $material->getId() ?>" <?= isset($filters['material_id']) && $filters['material_id'] == $material->getId() ? 'selected' : '' ?>>
                             <?= $this->escapeHtml($material->getNazev()) ?>
                         </option>
                     <?php endforeach; ?>
@@ -40,7 +39,7 @@ $this->headScript()->appendFile($this->basePath('js/script.js'));
             
             <div class="filter-group">
                 <label for="search">Vyhledávání:</label>
-                <input type="text" name="search" id="search" v-model="search" value="<?= isset($searchTerm) ? $this->escapeHtml($searchTerm) : '' ?>" placeholder="Kód nebo popis...">
+                <input type="text" name="search" id="search" value="<?= isset($filters['search']) ? $this->escapeHtml($filters['search']) : '' ?>" placeholder="Kód nebo popis...">
             </div>
             
             <input type="hidden" name="order_by" value="<?= $this->escapeHtml($orderBy) ?>">

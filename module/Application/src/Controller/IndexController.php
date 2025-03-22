@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Application\Entity\Produkt;
 use Application\Entity\Znacka;
 use Application\Entity\Material;
+use Application\Form\ProduktForm;
 
 class IndexController extends AbstractActionController
 {
@@ -46,10 +47,6 @@ class IndexController extends AbstractActionController
         $znacky = $this->entityManager->getRepository(Znacka::class)->findAll();
         $materialy = $this->entityManager->getRepository(Material::class)->findAll();
         
-        // Získání aktuálních hodnot filtrů pro Vue.js
-        $selectedBrand = $znackaId;
-        $selectedMaterial = $materialId;
-        
         return new ViewModel([
             'produkty' => $produkty,
             'znacky' => $znacky,
@@ -59,23 +56,30 @@ class IndexController extends AbstractActionController
             'orderDir' => $orderDir,
             'filters' => $filters,
             'totalCount' => $totalCount,
-            'totalPages' => ceil($totalCount / 10),
-            'selectedBrand' => $selectedBrand,
-            'selectedMaterial' => $selectedMaterial,
-            'searchTerm' => $search
+            'totalPages' => ceil($totalCount / 10)
         ]);
     }
     
-    // Ostatní metody zůstávají stejné
     public function csvAction()
     {
         $orderBy = $this->params()->fromQuery('order_by', 'id');
         $orderDir = $this->params()->fromQuery('order_dir', 'ASC');
-        $filters = [
-            'znacka_id' => (int) $this->params()->fromQuery('znacka_id', 0),
-            'material_id' => (int) $this->params()->fromQuery('material_id', 0),
-            'search' => $this->params()->fromQuery('search', '')
-        ];
+        $filters = [];
+        
+        $znackaId = (int) $this->params()->fromQuery('znacka_id', 0);
+        if ($znackaId > 0) {
+            $filters['znacka_id'] = $znackaId;
+        }
+        
+        $materialId = (int) $this->params()->fromQuery('material_id', 0);
+        if ($materialId > 0) {
+            $filters['material_id'] = $materialId;
+        }
+        
+        $search = $this->params()->fromQuery('search', '');
+        if (!empty($search)) {
+            $filters['search'] = $search;
+        }
 
         $repository = $this->entityManager->getRepository(Produkt::class);
         $produkty = $repository->findAllForExport($orderBy, $orderDir, $filters);
