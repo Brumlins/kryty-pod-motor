@@ -58,4 +58,31 @@ class ProduktRepository extends EntityRepository
         
         return $qb->getQuery()->getSingleScalarResult();
     }
+    public function findAllForExport($orderBy = 'id', $orderDir = 'ASC', $filters = [])
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('p, z, m')
+            ->join('p.znacka', 'z')
+            ->join('p.material', 'm');
+        
+        if (!empty($filters['znacka_id'])) {
+            $qb->andWhere('p.znacka = :znacka')
+            ->setParameter('znacka', $filters['znacka_id']);
+        }
+        
+        if (!empty($filters['material_id'])) {
+            $qb->andWhere('p.material = :material')
+            ->setParameter('material', $filters['material_id']);
+        }
+        
+        if (!empty($filters['search'])) {
+            $qb->andWhere('p.kod LIKE :search OR p.popis LIKE :search')
+            ->setParameter('search', '%' . $filters['search'] . '%');
+        }
+        
+        $qb->orderBy('p.' . $orderBy, $orderDir);
+        
+        return $qb->getQuery()->getResult();
+    }
+
 }

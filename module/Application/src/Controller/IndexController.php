@@ -58,4 +58,71 @@ class IndexController extends AbstractActionController
             'totalPages' => ceil($totalCount / 10)
         ]);
     }
+    public function csvAction()
+    {
+        $orderBy = $this->params()->fromQuery('order_by', 'id');
+        $orderDir = $this->params()->fromQuery('order_dir', 'ASC');
+        $filters = [
+            'znacka_id' => (int) $this->params()->fromQuery('znacka_id', 0),
+            'material_id' => (int) $this->params()->fromQuery('material_id', 0),
+            'search' => $this->params()->fromQuery('search', '')
+        ];
+
+        $repository = $this->entityManager->getRepository(Produkt::class);
+        $produkty = $repository->findAllForExport($orderBy, $orderDir, $filters);
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=produkty.csv');
+
+        $output = fopen('php://output', 'w');
+
+        fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
+
+        fputcsv($output, ['ID', 'Kód', 'Značka', 'Materiál', 'Cena', 'Popis']);
+
+        foreach ($produkty as $produkt) {
+            fputcsv($output, [
+                $produkt->getId(),
+                $produkt->getKod(),
+                $produkt->getZnacka()->getNazev(),
+                $produkt->getMaterial()->getNazev(),
+                $produkt->getCena(),
+                $produkt->getPopis()
+            ]);
+        }
+
+        fclose($output);
+        exit;
+    }
+    public function editAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('home');
+        }
+
+        $produkt = $this->entityManager->getRepository(Produkt::class)->find($id);
+        if (!$produkt) {
+            return $this->redirect()->toRoute('home');
+        }
+
+        $form = new ProduktForm($this->entityManager);
+        $form->bind($produkt);
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                $this->entityManager->flush();
+                return $this->redirect()->toRoute('home');
+            }
+        }
+
+        return new ViewModel([
+            'form' => $form,
+            'produkt' => $produkt
+        ]);
+    }
+
+
 }
