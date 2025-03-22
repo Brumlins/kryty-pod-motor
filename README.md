@@ -99,3 +99,51 @@ INSERT INTO produkty (kod, znacka_id, material_id, cena, popis) VALUES
 ('PM00019', 10, 1, 1250.00, 'Kryt pod motor MERCEDES C-CLASS (W204)'),
 ('PM00020', 10, 3, 1850.00, 'Kryt pod motor MERCEDES E-CLASS (W212)');
 ```
+---
+
+# Jak zapnout aplikaci?
+
+## Windows
+
+### Požadavky:
+
+- PHP 8.3 (Já mám přes Xampp)
+
+- MySQL (Taky přes Xampp)
+
+- Webový server (Apache, taky přes Xampp)
+
+- Composer
+
+- Git
+
+### 1. Stažení projektu
+```
+git clone https://github.com/Brumlins/kryty-pod-motor.git
+cd kryty-pod-motor
+```
+
+### 2. Instalace závislostí
+```
+composer install
+```
+
+### 3. Konfigurace databáze
+
+1. Vytvoření databáze (data/schema.sql - SQL příkazy výše, ale příkazy jsou přímo v souboru už sepsané)
+
+2. Upravte své přihlašovací údaje k databázi
+
+```
+config/autoload/global.php
+```
+Tato část kódu:
+```
+'params' => [
+    'host' => 'localhost', #host
+    'port' => '3306', #port
+    'user' => 'root', #user
+    'password' => '', #heslo
+    'dbname' => 'kryty_pod_motor', #nazev databaze (pokud jste zmenili)
+]
+```

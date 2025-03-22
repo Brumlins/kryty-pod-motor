@@ -9,7 +9,7 @@ return [
             'orm_default' => [
                 'driver_class' => Driver::class,
                 'params' => [
-                    'host' => 'localhost',
+                    'host' => 'localhost', 
                     'port' => '3306',
                     'user' => 'root',
                     'password' => '',
