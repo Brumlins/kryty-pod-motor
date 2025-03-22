@@ -33,7 +33,7 @@
 
 ---
 
-## 1. Databáze
+## Databáze
 
 ### SQL příkazy do data/schema.sql
 
@@ -99,8 +99,3 @@ INSERT INTO produkty (kod, znacka_id, material_id, cena, popis) VALUES
 ('PM00019', 10, 1, 1250.00, 'Kryt pod motor MERCEDES C-CLASS (W204)'),
 ('PM00020', 10, 3, 1850.00, 'Kryt pod motor MERCEDES E-CLASS (W212)');
 ```
-
- + stažení doctrine ORM 
- ```composer require doctrine/orm doctrine/doctrine-laminas-hydrator```
-
- 

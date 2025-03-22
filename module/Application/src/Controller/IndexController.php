@@ -128,26 +128,24 @@ class IndexController extends AbstractActionController
             $form->setData($request->getPost());
             
             if ($form->isValid()) {
-                // Get form data
                 $data = $form->getData();
                 
-                // Convert znacka ID to entity object
                 if (is_string($data->getZnacka())) {
                     $znackaId = $data->getZnacka();
-                    $znacka = $this->entityManager->getRepository(Znacka::class)->find($znackaId);
-                    $produkt->setZnacka($znacka);
+                    $znacka = $this->entityManager->getRepository(\Application\Entity\Znacka::class)->find($znackaId);
+                    $data->setZnacka($znacka);
                 }
                 
-                // Convert material ID to entity object
                 if (is_string($data->getMaterial())) {
                     $materialId = $data->getMaterial();
-                    $material = $this->entityManager->getRepository(Material::class)->find($materialId);
-                    $produkt->setMaterial($material);
+                    $material = $this->entityManager->getRepository(\Application\Entity\Material::class)->find($materialId);
+                    $data->setMaterial($material);
                 }
                 
                 $this->entityManager->flush();
                 return $this->redirect()->toRoute('home');
             }
+            
         }
 
         return new ViewModel([

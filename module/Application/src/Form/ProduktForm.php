@@ -6,6 +6,7 @@ use Laminas\Form\Element;
 use Doctrine\ORM\EntityManager;
 use Application\Entity\Znacka;
 use Application\Entity\Material;
+use DoctrineModule\Form\Element\ObjectSelect;
 
 class ProduktForm extends Form
 {
@@ -36,27 +37,33 @@ class ProduktForm extends Form
 
         $this->add([
             'name' => 'znacka',
-            'type' => Element\Select::class,
+            'type' => ObjectSelect::class,
             'options' => [
                 'label' => 'Značka',
-                'value_options' => $this->getZnackyOptions(),
                 'object_manager' => $this->entityManager,
-                'target_class' => 'Application\Entity\Znacka',
+                'target_class' => Znacka::class,
                 'property' => 'nazev',
+                'is_method' => true,
+                'find_method' => [
+                    'name' => 'findAll',
+                ],
             ],
         ]);
         
-
         $this->add([
             'name' => 'material',
-            'type' => Element\Select::class,
+            'type' => ObjectSelect::class,
             'options' => [
                 'label' => 'Materiál',
-                'property' => 'id',  
-                'value_options' => $this->getMaterialyOptions(),
+                'object_manager' => $this->entityManager,
+                'target_class' => Material::class,
+                'property' => 'nazev',
+                'is_method' => true,
+                'find_method' => [
+                    'name' => 'findAll',
+                ],
             ],
         ]);
-        
 
         $this->add([
             'name' => 'cena',
@@ -92,26 +99,4 @@ class ProduktForm extends Form
             ],
         ]);
     }
-
-    private function getZnackyOptions()
-    {
-        $znacky = $this->entityManager->getRepository(Znacka::class)->findAll();
-        $options = [];
-        foreach ($znacky as $znacka) {
-            $options[$znacka->getId()] = $znacka->getNazev();
-        }
-        return $options;
-    }
-
-
-    private function getMaterialyOptions()
-    {
-        $materialy = $this->entityManager->getRepository(Material::class)->findAll();
-        $options = [];
-        foreach ($materialy as $material) {
-            $options[$material->getId()] = $material->getNazev();
-        }
-        return $options;
-    }
-
 }
