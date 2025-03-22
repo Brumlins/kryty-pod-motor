@@ -7,6 +7,10 @@ $form = $this->form;
 $form->prepare();
 ?>
 
+<div class="header-logo-container">
+    <img src="<?= $this->basePath('img/logo-kryty.jpg') ?>" alt="Logo Kryty pod motor" class="header-logo">
+</div>
+
 <div class="container">
     <h1>Upravit produkt</h1>
     
@@ -35,6 +39,7 @@ $form->prepare();
         <?= $this->formElement($form->get('cena')) ?>
         <?= $this->formElementErrors($form->get('cena')) ?>
     </div>
+    
     <div class="form-group">
         <?= $this->formLabel($form->get('popis')) ?>
         <?= $this->formElement($form->get('popis')) ?>

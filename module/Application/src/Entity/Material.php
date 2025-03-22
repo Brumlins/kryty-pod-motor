@@ -15,7 +15,6 @@ class Material
     #[ORM\Column(type: "string", length: 100)]
     private $nazev;
     
-    // Getters and setters
     public function getId()
     {
         return $this->id;
@@ -31,4 +30,9 @@ class Material
         $this->nazev = $nazev;
         return $this;
     }
+    public function __toString()
+    {
+        return $this->getNazev() ?: '';
+    }
+
 }

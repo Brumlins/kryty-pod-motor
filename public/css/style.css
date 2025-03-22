@@ -11,11 +11,9 @@
     border-color: var(--brand-color);
 }
 
-/* allows bootstrap to style Laminas Navigation generated menu items within the navbar */
 .navbar li.active a {
     color: var(--bs-navbar-active-color);
 }
-/* Základní reset a nastavení */
 * {
     margin: 0;
     padding: 0;
@@ -243,4 +241,53 @@ input[type="submit"]:hover {
 .header-logo {
     max-height: 80px;
     max-width: 100%;
+}
+/* Formulář pro editaci */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group textarea {
+    height: 100px;
+}
+
+input[type="submit"] {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+input[type="submit"]:hover {
+    background: #45a049;
+}
+
+.back-link {
+    margin-top: 20px;
+}
+
+.form-errors {
+    color: #f44336;
+    font-size: 14px;
+    margin-top: 5px;
 }

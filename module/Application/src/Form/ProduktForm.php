@@ -28,6 +28,10 @@ class ProduktForm extends Form
             'options' => [
                 'label' => 'Kód produktu',
             ],
+            'attributes' => [
+                'required' => true,
+                'maxlength' => 10,
+            ],
         ]);
 
         $this->add([
@@ -36,23 +40,34 @@ class ProduktForm extends Form
             'options' => [
                 'label' => 'Značka',
                 'value_options' => $this->getZnackyOptions(),
+                'object_manager' => $this->entityManager,
+                'target_class' => 'Application\Entity\Znacka',
+                'property' => 'nazev',
             ],
         ]);
+        
 
         $this->add([
             'name' => 'material',
             'type' => Element\Select::class,
             'options' => [
                 'label' => 'Materiál',
+                'property' => 'id',  
                 'value_options' => $this->getMaterialyOptions(),
             ],
         ]);
+        
 
         $this->add([
             'name' => 'cena',
             'type' => Element\Number::class,
             'options' => [
                 'label' => 'Cena',
+            ],
+            'attributes' => [
+                'required' => true,
+                'step' => '0.01',
+                'min' => '0',
             ],
         ]);
 
@@ -62,6 +77,9 @@ class ProduktForm extends Form
             'options' => [
                 'label' => 'Popis',
             ],
+            'attributes' => [
+                'rows' => 5,
+            ],
         ]);
 
         $this->add([
@@ -70,6 +88,7 @@ class ProduktForm extends Form
             'attributes' => [
                 'value' => 'Uložit',
                 'id'    => 'submitbutton',
+                'class' => 'btn',
             ],
         ]);
     }
@@ -84,6 +103,7 @@ class ProduktForm extends Form
         return $options;
     }
 
+
     private function getMaterialyOptions()
     {
         $materialy = $this->entityManager->getRepository(Material::class)->findAll();
@@ -93,4 +113,5 @@ class ProduktForm extends Form
         }
         return $options;
     }
+
 }

@@ -14,7 +14,6 @@
             ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
         ?>
 
-        <!-- Styles -->
         <?= $this->headLink([
                 'rel' => 'shortcut icon',
                 'type' => 'image/vnd.microsoft.icon',
@@ -23,7 +22,6 @@
             ->prependStylesheet($this->basePath('css/style.css'))
             ->prependStylesheet($this->basePath('css/bootstrap.min.css')) ?>
 
-        <!-- Scripts -->
         <?= $this->headScript() ?>
     </head>
     <body>

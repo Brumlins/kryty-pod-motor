@@ -126,7 +126,25 @@ class IndexController extends AbstractActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $form->setData($request->getPost());
+            
             if ($form->isValid()) {
+                // Get form data
+                $data = $form->getData();
+                
+                // Convert znacka ID to entity object
+                if (is_string($data->getZnacka())) {
+                    $znackaId = $data->getZnacka();
+                    $znacka = $this->entityManager->getRepository(Znacka::class)->find($znackaId);
+                    $produkt->setZnacka($znacka);
+                }
+                
+                // Convert material ID to entity object
+                if (is_string($data->getMaterial())) {
+                    $materialId = $data->getMaterial();
+                    $material = $this->entityManager->getRepository(Material::class)->find($materialId);
+                    $produkt->setMaterial($material);
+                }
+                
                 $this->entityManager->flush();
                 return $this->redirect()->toRoute('home');
             }
@@ -137,4 +155,5 @@ class IndexController extends AbstractActionController
             'produkt' => $produkt
         ]);
     }
+
 }

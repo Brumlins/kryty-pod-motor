@@ -15,11 +15,11 @@ class Produkt
     #[ORM\Column(type: "string", length: 10)]
     private $kod;
     
-    #[ORM\ManyToOne(targetEntity: "Znacka")]
+    #[ORM\ManyToOne(targetEntity: "Application\Entity\Znacka")]
     #[ORM\JoinColumn(name: "znacka_id", referencedColumnName: "id")]
     private $znacka;
     
-    #[ORM\ManyToOne(targetEntity: "Material")]
+    #[ORM\ManyToOne(targetEntity: "Application\Entity\Material")]
     #[ORM\JoinColumn(name: "material_id", referencedColumnName: "id")]
     private $material;
     
@@ -37,7 +37,6 @@ class Produkt
         $this->vytvoreno = new \DateTime();
     }
     
-    // Getters and setters
     public function getId()
     {
         return $this->id;
@@ -102,4 +101,30 @@ class Produkt
     {
         return $this->vytvoreno;
     }
+    public function getArrayCopy()
+    {
+        return [
+            'id' => $this->id,
+            'kod' => $this->kod,
+            'znacka' => $this->znacka,
+            'material' => $this->material,
+            'cena' => $this->cena,
+            'popis' => $this->popis,
+            'vytvoreno' => $this->vytvoreno
+        ];
+    }
+    public function exchangeArray(array $data)
+    {
+        $this->id = $data['id'] ?? $this->id;
+        $this->kod = $data['kod'] ?? $this->kod;
+        $this->znacka = $data['znacka'] ?? $this->znacka;
+        $this->material = $data['material'] ?? $this->material;
+        $this->cena = $data['cena'] ?? $this->cena;
+        $this->popis = $data['popis'] ?? $this->popis;
+        $this->vytvoreno = $data['vytvoreno'] ?? $this->vytvoreno;
+        
+        return $this;
+    }
+
+
 }
