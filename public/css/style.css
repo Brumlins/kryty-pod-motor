@@ -233,3 +233,14 @@ input[type="submit"]:hover {
         overflow-x: auto;
     }
 }
+.header-logo-container {
+    background-color: #fff;
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.header-logo {
+    max-height: 80px;
+    max-width: 100%;
+}

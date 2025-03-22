@@ -1,7 +1,7 @@
 <?php
 namespace Application\Repository;
 
-use Application\Entity\Produkt;
+use Application\src\Entity\Produkt;
 use Doctrine\ORM\EntityRepository;
 
 class ProduktRepository extends EntityRepository

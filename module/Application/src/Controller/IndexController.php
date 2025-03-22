@@ -46,6 +46,10 @@ class IndexController extends AbstractActionController
         $znacky = $this->entityManager->getRepository(Znacka::class)->findAll();
         $materialy = $this->entityManager->getRepository(Material::class)->findAll();
         
+        // Získání aktuálních hodnot filtrů pro Vue.js
+        $selectedBrand = $znackaId;
+        $selectedMaterial = $materialId;
+        
         return new ViewModel([
             'produkty' => $produkty,
             'znacky' => $znacky,
@@ -55,9 +59,14 @@ class IndexController extends AbstractActionController
             'orderDir' => $orderDir,
             'filters' => $filters,
             'totalCount' => $totalCount,
-            'totalPages' => ceil($totalCount / 10)
+            'totalPages' => ceil($totalCount / 10),
+            'selectedBrand' => $selectedBrand,
+            'selectedMaterial' => $selectedMaterial,
+            'searchTerm' => $search
         ]);
     }
+    
+    // Ostatní metody zůstávají stejné
     public function csvAction()
     {
         $orderBy = $this->params()->fromQuery('order_by', 'id');
@@ -94,6 +103,7 @@ class IndexController extends AbstractActionController
         fclose($output);
         exit;
     }
+    
     public function editAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
@@ -123,6 +133,4 @@ class IndexController extends AbstractActionController
             'produkt' => $produkt
         ]);
     }
-
-
 }

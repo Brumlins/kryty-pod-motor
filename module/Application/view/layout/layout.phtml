@@ -64,11 +64,29 @@
             <footer>
                 <p>
                     &copy; <?= date('Y') ?>
-                    <a href="https://getlaminas.org/">Laminas Project</a> a Series of LF Projects, LLC.
+                    Projekt pro Extradeon - Tomáš Řehulek
                 </p>
             </footer>
         </div>
-        <?= $this->inlineScript()
-            ->prependFile($this->basePath('js/bootstrap.min.js')) ?>
+        <!-- Přidejte před uzavírací </body> tag -->
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+        <script>
+            if (document.getElementById('app')) {
+                new Vue({
+                    el: '#app',
+                    data: {
+                        search: '<?= isset($filters['search']) ? $this->escapeJs($filters['search']) : '' ?>',
+                        selectedBrand: <?= isset($filters['znacka_id']) ? (int)$filters['znacka_id'] : 0 ?>,
+                        selectedMaterial: <?= isset($filters['material_id']) ? (int)$filters['material_id'] : 0 ?>
+                    },
+                    methods: {
+                        applyFilters() {
+                            document.getElementById('filter-form').submit();
+                        }
+                    }
+                });
+            }
+        </script>
+
     </body>
 </html>

@@ -1,20 +1,25 @@
 <?php
-$this->headTitle('Správa produktů¯ - Kryty pod motor');
+$this->headTitle('Správa produktů - Kryty pod motor');
 $this->headLink()->appendStylesheet($this->basePath('css/style.css'));
 $this->headScript()->appendFile($this->basePath('js/script.js'));
 ?>
 
+<div class="header-logo-container">
+    <img src="<?= $this->basePath('img/logo-kryty.jpg') ?>" alt="Logo Kryty pod motor" class="header-logo">
+</div>
+
 <div class="container">
-    <h1>Správa produktů¯ - Kryty pod motor</h1>
+    <h1>Správa produktů - Kryty pod motor</h1>
     
-    <div class="filter-container">
-        <form method="GET" action="<?= $this->url('home') ?>">
+    <!-- Vue.js filtrování -->
+    <div id="app" class="filter-container">
+        <form id="filter-form" method="GET" action="<?= $this->url('home') ?>">
             <div class="filter-group">
-                <label for="znacka_id">ZnaÄka:</label>
-                <select name="znacka_id" id="znacka_id">
+                <label for="znacka_id">Značka:</label>
+                <select name="znacka_id" id="znacka_id" v-model="selectedBrand" @change="applyFilters">
                     <option value="0">Všechny značky</option>
                     <?php foreach ($znacky as $znacka): ?>
-                        <option value="<?= $znacka->getId() ?>" <?= isset($filters['znacka_id']) && $filters['znacka_id'] == $znacka->getId() ? 'selected' : '' ?>>
+                        <option value="<?= $znacka->getId() ?>" <?= isset($selectedBrand) && $selectedBrand == $znacka->getId() ? 'selected' : '' ?>>
                             <?= $this->escapeHtml($znacka->getNazev()) ?>
                         </option>
                     <?php endforeach; ?>
@@ -23,10 +28,10 @@ $this->headScript()->appendFile($this->basePath('js/script.js'));
             
             <div class="filter-group">
                 <label for="material_id">Materiál:</label>
-                <select name="material_id" id="material_id">
-                    <option value="0">VÅ¡echny materiÃ¡ly</option>
+                <select name="material_id" id="material_id" v-model="selectedMaterial" @change="applyFilters">
+                    <option value="0">Všechny materiály</option>
                     <?php foreach ($materialy as $material): ?>
-                        <option value="<?= $material->getId() ?>" <?= isset($filters['material_id']) && $filters['material_id'] == $material->getId() ? 'selected' : '' ?>>
+                        <option value="<?= $material->getId() ?>" <?= isset($selectedMaterial) && $selectedMaterial == $material->getId() ? 'selected' : '' ?>>
                             <?= $this->escapeHtml($material->getNazev()) ?>
                         </option>
                     <?php endforeach; ?>
@@ -34,8 +39,8 @@ $this->headScript()->appendFile($this->basePath('js/script.js'));
             </div>
             
             <div class="filter-group">
-                <label for="search">Vyhledávání­:</label>
-                <input type="text" name="search" id="search" value="<?= isset($filters['search']) ? $this->escapeHtml($filters['search']) : '' ?>" placeholder="Kód nebo popis...">
+                <label for="search">Vyhledávání:</label>
+                <input type="text" name="search" id="search" v-model="search" value="<?= isset($searchTerm) ? $this->escapeHtml($searchTerm) : '' ?>" placeholder="Kód nebo popis...">
             </div>
             
             <input type="hidden" name="order_by" value="<?= $this->escapeHtml($orderBy) ?>">
@@ -46,7 +51,7 @@ $this->headScript()->appendFile($this->basePath('js/script.js'));
     </div>
     
     <div class="export-container">
-        <a href="<?= $this->url('home', [], ['query' => array_merge($_GET, ['format' => 'csv'])]) ?>" class="btn">Export do CSV</a>
+        <a href="<?= $this->url('home/csv', [], ['query' => array_merge($_GET)]) ?>" class="btn">Export do CSV</a>
     </div>
     
     <table class="products-table">
@@ -91,7 +96,7 @@ $this->headScript()->appendFile($this->basePath('js/script.js'));
                     <td><?= number_format($produkt->getCena(), 2, ',', ' ') ?> Kč</td>
                     <td><?= $this->escapeHtml($produkt->getPopis()) ?></td>
                     <td>
-                        <a href="<?= $this->url('home', ['action' => 'edit', 'id' => $produkt->getId()]) ?>" class="btn btn-edit">Upravit</a>
+                        <a href="<?= $this->url('home/edit', ['id' => $produkt->getId()]) ?>" class="btn btn-edit">Upravit</a>
                     </td>
                 </tr>
             <?php endforeach; ?>

@@ -20,6 +20,30 @@ return [
                         'action'     => 'index',
                     ],
                 ],
+                'may_terminate' => true,
+                'child_routes' => [
+                    'edit' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route'    => 'edit/:id',
+                            'defaults' => [
+                                'action' => 'edit',
+                            ],
+                            'constraints' => [
+                                'id' => '[0-9]+',
+                            ],
+                        ],
+                    ],
+                    'csv' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route'    => 'export',
+                            'defaults' => [
+                                'action' => 'csv',
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'application' => [
                 'type'    => Segment::class,
@@ -35,9 +59,8 @@ return [
     ],
     'controllers' => [
         'factories' => [
-            Controller\IndexController::class => 
-        Controller\Factory\IndexControllerFactory::class,
-            ],
+            Controller\IndexController::class => Controller\Factory\IndexControllerFactory::class,
+        ],
     ],
     'view_manager' => [
         'display_not_found_reason' => true,
