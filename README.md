@@ -15,21 +15,19 @@
 
 - [Zend (Laminas)](https://getlaminas.org/)
 
-- [Nette](https://nette.org/cs/)
-
 - [ORM Doctrine](https://www.doctrine-project.org/)
-
-- [ElasticSearch](https://www.elastic.co/)
-
-- [Redis](https://redis.io/)
-
-- [Vue.js](https://vuejs.org/)
 
 - [Docker](https://www.docker.com/)
 
-- [Jenkins](https://www.jenkins.io/)
+- [Composer](https://getcomposer.org/)
 
-- [Sass](https://sass-lang.com/)
+- [Git](https://git-scm.com/)
+
+- [Apache](https://httpd.apache.org/)
+
+- [Xampp (s PHP 8.3)](https://www.apachefriends.org/)
+
+- PHP Rozšíření (php.ini) - intl, pdo_mysql, openssl, zip, mysqli
 
 ---
 
@@ -103,8 +101,6 @@ INSERT INTO produkty (kod, znacka_id, material_id, cena, popis) VALUES
 
 # Jak zapnout aplikaci?
 
-## Windows
-
 ### Požadavky:
 
 - PHP 8.3 (Já mám přes Xampp)
@@ -146,4 +142,20 @@ Tato část kódu:
     'password' => '', #heslo
     'dbname' => 'kryty_pod_motor', #nazev databaze (pokud jste zmenili)
 ]
+```
+
+3. V php.ini se ujistit že jsou povolené tato rozšíření:
+```
+intl, pdo_mysql, openssl, zip, mysqli
+```
+Stačí je najít v php.ini a před extension dát pryč středník (;)
+
+4. Spuštění aplikace 
+```
+php -S localhost:8080 -t public
+```
+
+## Webovou aplikaci najdeme na:
+```
+localhost:8080
 ```
