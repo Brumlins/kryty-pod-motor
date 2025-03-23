@@ -159,3 +159,14 @@ php -S localhost:8080 -t public
 ```
 localhost:8080
 ```
+
+## Ukázky:
+
+### Hlavní stránka:
+![Ukázka 1](public/img/ukazka1.PNG)
+
+### Filtrování
+![Ukázka 2](public/img/ukazka2.PNG)
+
+### Úpravy
+![Ukázka 3](public/img/ukazka3.PNG)
