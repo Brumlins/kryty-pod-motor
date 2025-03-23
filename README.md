@@ -27,7 +27,7 @@
 
 - [Xampp (s PHP 8.3)](https://www.apachefriends.org/)
 
-- PHP Rozšíření (php.ini) - intl, pdo_mysql, openssl, zip, mysqli
+- PHP Rozšíření (php.ini) - intl, pdo_mysql, openssl, zip, mysqli, curl
 
 ---
 
@@ -116,17 +116,25 @@ INSERT INTO produkty (kod, znacka_id, material_id, cena, popis) VALUES
 ### 1. Stažení projektu
 ```
 git clone https://github.com/Brumlins/kryty-pod-motor.git
+```
+```
 cd kryty-pod-motor
 ```
 
-### 2. Instalace závislostí
+### 2. V php.ini se ujistit že jsou povolené tato rozšíření:
+```
+intl, pdo_mysql, openssl, zip, mysqli, curl
+```
+Stačí je najít v php.ini a před extension dát pryč středník (;)
+
+### 3. Instalace závislostí
 ```
 composer install
 ```
 
-### 3. Konfigurace databáze
+### 4. Konfigurace databáze
 
-1. Vytvoření databáze (data/schema.sql - SQL příkazy výše, ale příkazy jsou přímo v souboru už sepsané)
+1. Vytvoření databáze (SQL příkazy výše, ale příkazy jsou sepsané i v data/schema.sql)
 
 2. Upravte své přihlašovací údaje k databázi
 
@@ -140,17 +148,11 @@ Tato část kódu:
     'port' => '3306', #port
     'user' => 'root', #user
     'password' => '', #heslo
-    'dbname' => 'kryty_pod_motor', #nazev databaze (pokud jste zmenili)
+    'dbname' => 'kryty_pod_motor', #nazev databaze (pokud jste změnili)
 ]
 ```
 
-3. V php.ini se ujistit že jsou povolené tato rozšíření:
-```
-intl, pdo_mysql, openssl, zip, mysqli
-```
-Stačí je najít v php.ini a před extension dát pryč středník (;)
-
-4. Spuštění aplikace 
+### 5. Spuštění aplikace 
 ```
 php -S localhost:8080 -t public
 ```
